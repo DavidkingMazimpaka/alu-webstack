@@ -2,7 +2,6 @@
 #your domain zone so that the subdomain www points to your load-balancer IP
 
 
-
 if [ $# == 2 ]; then
     domain=$1
     subdomain=$2
