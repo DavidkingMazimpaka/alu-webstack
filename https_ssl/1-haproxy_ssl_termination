@@ -39,15 +39,14 @@ frontend www-http
     default_backend web-backend
 
 frontend www-https
-    bind *:443 ssl crt /etc/haproxy/kayongojb.tech.pem
+    bind *:443 ssl crt /etc/ssl/www.astrophones.tech/www.astrophones.tech.pem
     http-request set-header X-Forwarded-Proto https
     acl letsencrypt-acl path_beg /.well-known/acme-challenge/
     use_backend letsencrypt-backend if letsencrypt-acl
     default_backend web-backend
-}
 
 backend web-backend
-    redirect scheme https unless { ssl_fc }
+    redirect scheme https if !{ ssl_fc }
     balance roundrobin
     server 5515-web-01 54.160.162.167:80 check
     server 5515-web-02 54.165.86.206:80 check
@@ -55,4 +54,3 @@ backend web-backend
 backend letsencrypt-backend
     balance roundrobin
     server letsencrypt 127.0.0.1:54321
-
